@@ -1,28 +1,70 @@
+<!-- 
+  作者：良米
+  bilibili:良米良米
+ -->
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <AppBar></AppBar>
+    <LeftLibs @swich-to-link="toLink()" @swich-to-api="toApi()"></LeftLibs>
+    <MainOfLink :class="linkClass"></MainOfLink>
+    <MainOfApi :class="apiClass"></MainOfApi>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+  import AppBar from "./components/AppBar.vue"
+  import LeftLibs from "./components/LeftLibs"
+  import MainOfLink from "./components/MainOfLink.vue"
+  import MainOfApi from "./components/MainOfApi.vue"
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
+
+  export default {
+    name: 'App',
+    components: {
+      AppBar,
+      LeftLibs,
+      MainOfLink,
+      MainOfApi
+    },
+    data() {
+      return {
+        linkClass: "",
+        apiClass: "invis"
+      }
+    },
+    mounted() {
+      //全局Js写在这里
+      console.log(this.$cookies.get('username'))
+      if (this.$cookies.get('username') == null) {
+        window.location.href = "./login.html";
+      }
+      setTimeout(() => {
+        location.reload();
+      }, 3600000)
+    },
+    methods: {
+      toLink() {
+        // this.$refs.links.classList.remove("invis");
+        // this.$refs.apis.classList.add("invis");
+        this.linkClass = "";
+        this.apiClass = "invis"
+      },
+
+      toApi() {
+        // this.$refs.links.classList.add("invis");
+        // this.$refs.apis.classList.remove("invis");
+        this.linkClass = "invis";
+        this.apiClass = "";
+      }
+    }
   }
-}
 </script>
-
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  .invis {
+    display: none;
+  }
+
+  #app {
+    height: 100%;
+  }
 </style>
